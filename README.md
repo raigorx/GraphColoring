@@ -48,7 +48,7 @@ cmake --build build
 
 ## Running Tests
 
-Test are made using google test <https://google.github.io/googletest/> tests are build via cmake same process as above.
+Test are made using google test <https://google.github.io/googletest/> and they are build via cmake same process as above.
 
 You can run them via cmake:
 
