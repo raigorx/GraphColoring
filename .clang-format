@@ -1,0 +1,11 @@
+BasedOnStyle: Google
+Language: Cpp
+Standard: c++20
+NamespaceIndentation: All
+# AlignAfterOpenBracket: Align
+BinPackArguments: false
+BinPackParameters: false
+ColumnLimit: 100
+SpacesInLineCommentPrefix:
+  Minimum: 2
+  Maximum: 2

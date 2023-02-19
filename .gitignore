@@ -1,0 +1,8 @@
+#vs code extension local history
+.history/
+
+.vscode/
+
+bin/
+lib/
+build/
