@@ -9,7 +9,7 @@ GraphColoring Algorithm Backtracking <https://en.wikipedia.org/wiki/Graph_colori
 
 - c++20 compiler
 
-## How to Build?
+## How to Build
 
 ### As standalone example
 
