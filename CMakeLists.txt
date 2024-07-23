@@ -33,11 +33,11 @@ add_subdirectory("src")
 # Static analyzers
 #
 # Currently supporting: Clang-Tidy, Cppcheck.
-option(${PROJECT_NAME}_ENABLE_CLANG_TIDY
-       "Enable static analysis with Clang-Tidy." ON)
-option(${PROJECT_NAME}_ENABLE_CPPCHECK "Enable static analysis with Cppcheck."
-       OFF)
-include(cmake/StaticAnalyzers.cmake)
+# option(${PROJECT_NAME}_ENABLE_CLANG_TIDY
+#        "Enable static analysis with Clang-Tidy." ON)
+# option(${PROJECT_NAME}_ENABLE_CPPCHECK "Enable static analysis with Cppcheck."
+#        OFF)
+# include(cmake/StaticAnalyzers.cmake)
 
 include(cmake/CompilerWarnings.cmake)
 set_project_warnings(${PROJECT_NAME})
