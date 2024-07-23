@@ -61,10 +61,6 @@ jobs:
 
     - name: Configure CMake on macOS
       if: matrix.os == 'macos-latest'
-      env:
-        PATH: /opt/homebrew/opt/llvm/bin:${{ env.PATH }}
-        LDFLAGS: -L/opt/homebrew/opt/llvm/lib
-        CPPFLAGS: -I/opt/homebrew/opt/llvm/include
       run: |
         cmake -B ${{ steps.strings.outputs.build-output-dir }} \
               -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} \
