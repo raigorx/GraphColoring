@@ -45,7 +45,10 @@ jobs:
 
     - name: Install Clang-Tidy on macOS
       if: matrix.os == 'macos-latest'
-      run: brew install llvm
+      run: |
+        brew install llvm
+        echo 'export PATH="/usr/local/opt/llvm/bin:$PATH"' >> $GITHUB_ENV
+        echo 'export PATH="/opt/homebrew/opt/llvm/bin:$PATH"' >> $GITHUB_ENV
 
     - name: Set reusable strings
       # Turn repeated input strings (such as the build output directory) into step outputs.
