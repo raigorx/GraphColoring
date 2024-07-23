@@ -43,12 +43,13 @@ jobs:
       if: matrix.os == 'ubuntu-latest'
       run: sudo apt-get install -y clang-tidy
 
-    - name: Install Clang-Tidy on macOS
+    - name: Install LLVM on macOS
       if: matrix.os == 'macos-latest'
       run: |
         brew install llvm
-        echo 'export PATH="/usr/local/opt/llvm/bin:$PATH"' >> $GITHUB_ENV
         echo 'export PATH="/opt/homebrew/opt/llvm/bin:$PATH"' >> $GITHUB_ENV
+        echo 'export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"' >> $GITHUB_ENV
+        echo 'export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"' >> $GITHUB_ENV
 
     - name: Set reusable strings
       # Turn repeated input strings (such as the build output directory) into step outputs.
@@ -58,15 +59,27 @@ jobs:
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
-    - name: Configure CMake
-      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: >
-        cmake -B ${{ steps.strings.outputs.build-output-dir }}
-        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
-        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-        -S ${{ github.workspace }}
+    - name: Configure CMake on macOS
+      if: matrix.os == 'macos-latest'
+      env:
+        PATH: /opt/homebrew/opt/llvm/bin:${{ env.PATH }}
+        LDFLAGS: -L/opt/homebrew/opt/llvm/lib
+        CPPFLAGS: -I/opt/homebrew/opt/llvm/include
+      run: |
+        cmake -B ${{ steps.strings.outputs.build-output-dir }} \
+              -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} \
+              -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} \
+              -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+              -S ${{ github.workspace }}
+
+    - name: Configure CMake on other platforms
+      if: matrix.os != 'macos-latest'
+      run: |
+        cmake -B ${{ steps.strings.outputs.build-output-dir }} \
+              -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} \
+              -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} \
+              -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+              -S ${{ github.workspace }}
 
     - name: Build
       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
